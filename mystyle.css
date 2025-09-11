@@ -10,4 +10,6 @@ body{
 }
 .pix img{
     border-radius: 12px;
+    padding: 5px;
+    margin: 8px;
 }
