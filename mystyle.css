@@ -6,9 +6,9 @@ body{
 .pix{
     background-color: lightblue;
     margin: 4px;
-    padding: 10px;
+    padding-left: 30px;
 }
-.pix img{
+img{
     border-radius: 12px;
     padding: 10px;
     margin: 5px;
