@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assignments</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h1>Assignments</h1>
+    <nav>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="assignments.html">Assignments</a></li>
+            <li><a href="projects.html">Projects</a></li>
+            <li><a href="contact.html">Contact</a></li>
+        </ul>
+    </nav>
+    <main style="display: flex; gap: 20px;">
+        <section style="flex: 1;">
+            <h2>Column 1</h2>
+            <p>Content for the first column.</p>
+        </section>
+        <section style="flex: 1;">
+            <h2>Column 2</h2>
+            <p>Content for the second column.</p>
+        </section>
+        <section style="flex: 1;">
+            <h2>Column 3</h2>
+            <p>Content for the third column.</p>
+        </section>
+
+        <section style="flex: 1;">
+            <h2>Contact Form</h2>
+            <form action="submit_contact.php" method="post">
+                <div>
+                    <label for="name">Name:</label><br>
+                    <input type="text" id="name" name="name" required>
+                </div>
+                <div>
+                    <label for="email">Email:</label><br>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                <div>
+                    <label for="message">Message:</label><br>
+                    <textarea id="message" name="message" rows="4" required></textarea>
+                </div>
+                <div>
+                    <button type="submit" onclick="toggleMenu()">Submit</button>
+                </div>
+            </form>
+        </section>
+    </main>
+    <script src="script.js"></script>
+</body>
+</html>
