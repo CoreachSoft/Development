@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Research Database - Search Results</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7f9;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Header Styles */
+        header {
+            background: linear-gradient(to right, #1a3a6c, #2c559c);
+            color: white;
+            padding: 15px 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .logo {
+            font-size: 28px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo i {
+            margin-right: 10px;
+            color: #ffd700;
+        }
+        
+        .auth-buttons a {
+            color: white;
+            text-decoration: none;
+            margin-left: 20px;
+            font-weight: 500;
+        }
+        
+        .auth-buttons a.sign-in {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 8px 15px;
+            border-radius: 4px;
+        }
+        
+        .auth-buttons a.sign-up {
+            background: #ffd700;
+            color: #1a3a6c;
+            padding: 8px 15px;
+            border-radius: 4px;
+        }
+        
+        /* Search Bar */
+        .search-bar {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            display: flex;
+            margin-bottom: 20px;
+        }
+        
+        .search-bar input {
+            flex: 1;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px 0 0 4px;
+            font-size: 16px;
+        }
+        
+        .search-bar button {
+            background: #2c559c;
+            color: white;
+            border: none;
+            padding: 0 25px;
+            border-radius: 0 4px 4px 0;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        
+        /* Main Content Layout */
+        .content {
+            display: flex;
+            gap: 30px;
+            margin: 30px 0;
+        }
+        
+        /* Filters Sidebar */
+        .filters {
+            width: 280px;
+            flex-shrink: 0;
+        }
+        
+        .filter-section {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+        
+        .filter-section h3 {
+            color: #1a3a6c;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .filter-options {
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        
+        .filter-option {
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .filter-option input {
+            margin-right: 10px;
+        }
+        
+        .filter-option label {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+        }
+        
+        .count {
+            color: #777;
+            font-size: 0.9em;
+        }
+        
+        /* Results Section */
+        .results {
+            flex: 1;
+        }
+        
+        .results-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .results-count {
+            color: #555;
+        }
+        
+        .sort-options select {
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        
+        /* Result Items */
+        .result-item {
+            background: white;
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            transition: transform 0.2s ease;
+        }
+        
+        .result-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+        
+        .result-title {
+            color: #1a3a6c;
+            font-size: 1.4em;
+            margin-bottom: 10px;
+            text-decoration: none;
+            display: block;
+        }
+        
+        .result-authors {
+            color: #2c559c;
+            margin-bottom: 10px;
+            font-weight: 500;
+        }
+        
+        .result-source {
+            color: #666;
+            margin-bottom: 15px;
+            font-size: 0.95em;
+        }
+        
+        .result-abstract {
+            color: #444;
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+        
+        .result-meta {
+            display: flex;
+            gap: 15px;
+            color: #777;
+            font-size: 0.9em;
+        }
+        
+        .result-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .result-actions a {
+            color: #2c559c;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .result-actions a:hover {
+            text-decoration: underline;
+        }
+        
+        /* Pagination */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin: 40px 0 20px;
+        }
+        
+        .pagination a {
+            color: #2c559c;
+            padding: 8px 16px;
+            text-decoration: none;
+            border: 1px solid #ddd;
+            margin: 0 4px;
+            border-radius: 4px;
+        }
+        
+        .pagination a.active {
+            background-color: #2c559c;
+            color: white;
+            border: 1px solid #2c559c;
+        }
+        
+        .pagination a:hover:not(.active) {
+            background-color: #f5f7f9;
+        }
+        
+        /* Footer */
+        footer {
+            background: #1a3a6c;
+            color: white;
+            padding: 40px 0 20px;
+            margin-top: 40px;
+        }
+        
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        
+        .footer-column h3 {
+            margin-bottom: 20px;
+            font-size: 18px;
+        }
+        
+        .footer-column a {
+            display: block;
+            color: #ccc;
+            text-decoration: none;
+            margin-bottom: 10px;
+        }
+        
+        .footer-column a:hover {
+            color: white;
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid #2c559c;
+            color: #ccc;
+            font-size: 14px;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .content {
+                flex-direction: column;
+            }
+            
+            .filters {
+                width: 100%;
+            }
+            
+            .filter-sections {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                gap: 20px;
+            }
+            
+            .filter-section {
+                margin-bottom: 0;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .header-top {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .auth-buttons {
+                margin-top: 15px;
+            }
+            
+            .results-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+            
+            .result-meta {
+                flex-wrap: wrap;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header Section -->
+    <header>
+        <div class="container">
+            <div class="header-top">
+                <div class="logo">
+                    <i class="fas fa-book-open"></i>
+                    ResearchDatabase
+                </div>
+                <div class="auth-buttons">
+                    <a href="#" class="sign-in">Sign In</a>
+                    <a href="#" class="sign-up">Sign Up</a>
+                </div>
+            </div>
+            
+            <div class="search-bar">
+                <input type="text" value="machine learning artificial intelligence" placeholder="Enter search terms...">
+                <button><i class="fas fa-search"></i> Search</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container">
+        <div class="content">
+            <!-- Filters Sidebar -->
+            <aside class="filters">
+                <h2>Refine Results</h2>
+                
+                <div class="filter-sections">
+                    <div class="filter-section">
+                        <h3>Subject</h3>
+                        <div class="filter-options">
+                            <div class="filter-option">
+                                <input type="checkbox" id="subject1" checked>
+                                <label for="subject1">Computer Science <span class="count">(2,431)</span></label>
+                            </div>
+                            <div class="filter-option">
+                                <input type="checkbox" id="subject2">
+                                <label for="subject2">Engineering <span class="count">(1,872)</span></label>
+                            </div>
+                            <div class="filter-option">
+                                <input type="checkbox" id="subject3">
+                                <label for="subject3">Mathematics <span class="count">(945)</span></label>
+                            </div>
+                            <div class="filter-option">
+                                <input type="checkbox" id="subject4">
+                                <label for="subject4">Physics <span class="count">(632)</span></label>
+                            </div>
+                            <div class="filter-option">
+                                <input type="checkbox" id="subject5">
+                                <label for="subject5">Psychology <span class="count">(421)</span></label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="filter-section">
+                        <h3>Publication Date</h3>
+                        <div class="filter-options">
+                            <div class="filter-option">
+                                <input type="checkbox" id="date1">
+                                <label for="date1">Last 12 months <span class="count">(873)</span></label>
+                            </div>
+                            <div class="filter-option">
+                                <input type="checkbox" id="date2" checked>
+                                <label for="date2">Last 5 years <span class="count">(3,421)</span></label>
+                            </div>
+                            <div class="filter-option">
+                                <input type="checkbox" id="date3">
+                                <label for="date3">2000-2019 <span class="count">(8,632)</span></label>
+                            </div>
+                            <div class="filter-option">
+                                <input type="checkbox" id="date4">
+                                <label for="date4">Before 2000 <span class="count">(2,145)</span></label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="filter-section">
+                        <h3>Content Type</h3>
+                        <div class="filter-options">
+                            <div class="filter-option">
+                                <input type="checkbox" id="type1" checked>
+                                <label for="type1">Journal Article <span class="count">(7,542)</span></label>
+                            </div>
+                            <div class="filter-option">
+                                <input type="checkbox" id="type2">
+                                <label for="type2">Conference Paper <span class="count">(3,214)</span></label>
+                            </div>
+                            <div class="filter-option">
+                                <input type="checkbox" id="type3">
+                                <label for="type3">Dissertation <span class="count">(1,873)</span></label>
+                            </div>
+                            <div class="filter-option">
+                                <input type="checkbox" id="type4">
+                                <label for="type4">Book Chapter <span class="count">(942)</span></label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="filter-section">
+                        <h3>Language</h3>
+                        <div class="filter-options">
+                            <div class="filter-option">
+                                <input type="checkbox" id="lang1" checked>
+                                <label for="lang1">English <span class="count">(12,432)</span></label>
+                            </div>
+                            <div class="filter-option">
+                                <input type="checkbox" id="lang2">
+                                <label for="lang2">German <span class="count">(843)</span></label>
+                            </div>
+                            <div class="filter-option">
+                                <input type="checkbox" id="lang3">
+                                <label for="lang3">French <span class="count">(632)</span></label>
+                            </div>
+                            <div class="filter-option">
+                                <input type="checkbox" id="lang4">
+                                <label for="lang4">Chinese <span class="count">(421)</span></label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+            
+            <!-- Results Section -->
+            <section class="results">
+                <div class="results-header">
+                    <div class="results-count">1-10 of 14,321 results</div>
+                    <div class="sort-options">
+                        <select>
+                            <option>Relevance</option>
+                            <option>Date (newest first)</option>
+                            <option>Date (oldest first)</option>
+                            <option>Author (A-Z)</option>
+                            <option>Author (Z-A)</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="result-items">
+                    <article class="result-item">
+                        <a href="#" class="result-title">Deep Learning Approaches to Natural Language Processing in Artificial Intelligence Systems</a>
+                        <div class="result-authors">Zhang, Wei; Johnson, Michael; Chen, Li</div>
+                        <div class="result-source">Journal of Artificial Intelligence Research, Vol. 45, Issue 2, 2021, pp. 234-267</div>
+                        <p class="result-abstract">This study explores advanced deep learning techniques for natural language processing tasks in AI systems. We propose a novel transformer architecture that improves upon existing models in both accuracy and computational efficiency...</p>
+                        <div class="result-meta">
+                            <span>DOI: 10.1016/j.jair.2021.03.005</span>
+                            <span><i class="far fa-calendar-alt"></i> 2021</span>
+                            <span><i class="far fa-file-alt"></i> 34 pages</span>
+                            <span><i class="far fa-eye"></i> 1,243 views</span>
+                        </div>
+                        <div class="result-actions">
+                            <a href="#"><i class="far fa-save"></i> Save</a>
+                            <a href="#"><i class="far fa-bookmark"></i> Cite</a>
+                            <a href="#"><i class="fas fa-download"></i> Download PDF</a>
+                            <a href="#"><i class="far fa-share-square"></i> Share</a>
+                        </div>
+                    </article>
+                    
+                    <article class="result-item">
+                        <a href="#" class="result-title">Machine Learning for Predictive Analytics in Healthcare: A Comparative Study</a>
+                        <div class="result-authors">Anderson, Sarah; Kumar, Raj; Wilson, James</div>
+                        <div class="result-source">IEEE Transactions on Knowledge and Data Engineering, Vol. 33, Issue 5, 2022, pp. 1124-1137</div>
+                        <p class="result-abstract">This paper presents a comprehensive comparison of machine learning algorithms for predictive analytics in healthcare applications. Our research demonstrates that ensemble methods outperform individual models in predicting patient outcomes...</p>
+                        <div class="result-meta">
+                            <span>DOI: 10.1109/TKDE.2022.3149876</span>
+                            <span><i class="far fa-calendar-alt"></i> 2022</span>
+                            <span><i class="far fa-file-alt"></i> 14 pages</span>
+                            <span><i class="far fa-eye"></i> 892 views</span>
+                        </div>
+                        <div class="result-actions">
+                            <a href="#"><i class="far fa-save"></i> Save</a>
+                            <a href="#"><i class="far fa-bookmark"></i> Cite</a>
+                            <a href="#"><i class="fas fa-download"></i> Download PDF</a>
+                            <a href="#"><i class="far fa-share-square"></i> Share</a>
+                        </div>
+                    </article>
+                    
+                    <article class="result-item">
+                        <a href="#" class="result-title">Ethical Implications of Artificial Intelligence in Autonomous Systems</a>
+                        <div class="result-authors">Martinez, Elena; Thompson, David</div>
+                        <div class="result-source">Science and Engineering Ethics, Vol. 28, Issue 3, 2022, pp. 1-24</div>
+                        <p class="result-abstract">This article examines the ethical challenges posed by AI in autonomous systems, focusing on decision-making algorithms and their societal impacts. We propose a framework for ethical AI development that incorporates transparency and accountability measures...</p>
+                        <div class="result-meta">
+                            <span>DOI: 10.1007/s11948-022-00379-0</span>
+                            <span><i class="far fa-calendar-alt"></i> 2022</span>
+                            <span><i class="far fa-file-alt"></i> 24 pages</span>
+                            <span><i class="far fa-eye"></i> 1,547 views</span>
+                        </div>
+                        <div class="result-actions">
+                            <a href="#"><i class="far fa-save"></i> Save</a>
+                            <a href="#"><i class="far fa-bookmark"></i> Cite</a>
+                            <a href="#"><i class="fas fa-download"></i> Download PDF</a>
+                            <a href="#"><i class="far fa-share-square"></i> Share</a>
+                        </div>
+                    </article>
+                    
+                    <article class="result-item">
+                        <a href="#" class="result-title">Reinforcement Learning in Multi-Agent Systems: Challenges and Solutions</a>
+                        <div class="result-authors">Kim, Ji-hyun; Brown, Alexander; Garcia, Maria</div>
+                        <div class="result-source">Autonomous Agents and Multi-Agent Systems, Vol. 36, Issue 1, 2023, pp. 45-78</div>
+                        <p class="result-abstract">This research addresses the challenges of reinforcement learning in multi-agent environments and proposes a novel algorithm that improves cooperation and learning efficiency. Our approach demonstrates significant improvements in complex simulation environments...</p>
+                        <div class="result-meta">
+                            <span>DOI: 10.1007/s10458-023-09599-5</span>
+                            <span><i class="far fa-calendar-alt"></i> 2023</span>
+                            <span><i class="far fa-file-alt"></i> 34 pages</span>
+                            <span><i class="far fa-eye"></i> 723 views</span>
+                        </div>
+                        <div class="result-actions">
+                            <a href="#"><i class="far fa-save"></i> Save</a>
+                            <a href="#"><i class="far fa-bookmark"></i> Cite</a>
+                            <a href="#"><i class="fas fa-download"></i> Download PDF</a>
+                            <a href="#"><i class="far fa-share-square"></i> Share</a>
+                        </div>
+                    </article>
+                </div>
+                
+                <div class="pagination">
+                    <a href="#">&laquo; Previous</a>
+                    <a href="#" class="active">1</a>
+                    <a href="#">2</a>
+                    <a href="#">3</a>
+                    <a href="#">4</a>
+                    <a href="#">5</a>
+                    <a href="#">Next &raquo;</a>
+                </div>
+            </section>
+        </div>
+    </main>
+    
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-column">
+                    <h3>Products</h3>
+                    <a href="#">ProQuest Central</a>
+                    <a href="#">Dissertations & Theses</a>
+                    <a href="#">Historical Newspapers</a>
+                    <a href="#">Ebook Central</a>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Support</h3>
+                    <a href="#">Help Center</a>
+                    <a href="#">Contact Us</a>
+                    <a href="#">Training Resources</a>
+                    <a href="#">Accessibility</a>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Company</h3>
+                    <a href="#">About Us</a>
+                    <a href="#">Careers</a>
+                    <a href="#">News</a>
+                    <a href="#">Partners</a>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Connect</h3>
+                    <a href="#">Blog</a>
+                    <a href="#">Twitter</a>
+                    <a href="#">Facebook</a>
+                    <a href="#">YouTube</a>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                <p>&copy; 2023 ResearchDatabase. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Simple interaction for filter options
+        document.querySelectorAll('.filter-option input').forEach(checkbox => {
+            checkbox.addEventListener('change', function() {
+                // In a real application, this would update the search results
+                console.log('Filter changed:', this.id, this.checked);
+            });
+        });
+        
+        // Sort functionality
+        document.querySelector('.sort-options select').addEventListener('change', function() {
+            console.log('Sort by:', this.value);
+            // In a real application, this would re-sort the results
+        });
+    </script>
+</body>
+</html>
