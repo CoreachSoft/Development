@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ResearchQuest - Academic Research Database</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7f9;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Header Styles */
+        header {
+            background: linear-gradient(to right, #1a3a6c, #2c559c);
+            color: white;
+            padding: 15px 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .logo {
+            font-size: 28px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo i {
+            margin-right: 10px;
+            color: #ffd700;
+        }
+        
+        .auth-buttons a {
+            color: white;
+            text-decoration: none;
+            margin-left: 20px;
+            font-weight: 500;
+        }
+        
+        .auth-buttons a.sign-in {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 8px 15px;
+            border-radius: 4px;
+        }
+        
+        .auth-buttons a.sign-up {
+            background: #ffd700;
+            color: #1a3a6c;
+            padding: 8px 15px;
+            border-radius: 4px;
+        }
+        
+        /* Search Section */
+        .search-section {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            margin-top: -20px;
+            position: relative;
+            z-index: 10;
+        }
+        
+        .search-tabs {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .search-tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            font-weight: 500;
+            color: #777;
+        }
+        
+        .search-tab.active {
+            color: #2c559c;
+            border-bottom: 3px solid #2c559c;
+        }
+        
+        .search-box {
+            display: flex;
+            margin-bottom: 20px;
+        }
+        
+        .search-box input {
+            flex: 1;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px 0 0 4px;
+            font-size: 16px;
+        }
+        
+        .search-box button {
+            background: #2c559c;
+            color: white;
+            border: none;
+            padding: 0 25px;
+            border-radius: 0 4px 4px 0;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        
+        .advanced-options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        
+        .filters a {
+            color: #2c559c;
+            text-decoration: none;
+            margin-right: 20px;
+            font-size: 14px;
+        }
+        
+        .search-tips {
+            color: #777;
+            font-size: 14px;
+        }
+        
+        /* Features Section */
+        .features {
+            padding: 60px 0;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 40px;
+            color: #1a3a6c;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        
+        .feature-card {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .feature-icon {
+            background: #2c559c;
+            color: white;
+            font-size: 24px;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .feature-content {
+            padding: 20px;
+        }
+        
+        .feature-content h3 {
+            color: #1a3a6c;
+            margin-bottom: 10px;
+        }
+        
+        /* Resources Section */
+        .resources {
+            background: #eef1f5;
+            padding: 60px 0;
+        }
+        
+        .resources-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        
+        .resource-card {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+        }
+        
+        .resource-card h3 {
+            color: #1a3a6c;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .resource-links a {
+            display: block;
+            color: #2c559c;
+            text-decoration: none;
+            margin-bottom: 10px;
+            padding: 5px 0;
+        }
+        
+        /* Footer */
+        footer {
+            background: #1a3a6c;
+            color: white;
+            padding: 40px 0 20px;
+        }
+        
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        
+        .footer-column h3 {
+            margin-bottom: 20px;
+            font-size: 18px;
+        }
+        
+        .footer-column a {
+            display: block;
+            color: #ccc;
+            text-decoration: none;
+            margin-bottom: 10px;
+        }
+        
+        .footer-column a:hover {
+            color: white;
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid #2c559c;
+            color: #ccc;
+            font-size: 14px;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header-top {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .auth-buttons {
+                margin-top: 15px;
+            }
+            
+            .advanced-options {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .search-tips {
+                margin-top: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header Section -->
+    <header>
+        <div class="container">
+            <div class="header-top">
+                <div class="logo">
+                    <i class="fas fa-book-open"></i>
+                    ResearchQuest
+                </div>
+                <div class="auth-buttons">
+                    <a href="#" class="sign-in">Sign In</a>
+                    <a href="#" class="sign-up">Sign Up</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container">
+        <!-- Search Section -->
+        <section class="search-section">
+            <div class="search-tabs">
+                <div class="search-tab active">Basic Search</div>
+                <div class="search-tab">Advanced Search</div>
+                <div class="search-tab">Publications</div>
+                <div class="search-tab">Dissertations</div>
+            </div>
+            
+            <div class="search-box">
+                <input type="text" placeholder="Enter search terms...">
+                <button><i class="fas fa-search"></i> Search</button>
+            </div>
+            
+            <div class="advanced-options">
+                <div class="filters">
+                    <a href="#"><i class="fas fa-filter"></i> Add Filters</a>
+                    <a href="#"><i class="fas fa-calendar"></i> Date Range</a>
+                    <a href="#"><i class="fas fa-file"></i> Content Type</a>
+                </div>
+                <div class="search-tips">
+                    <i class="fas fa-lightbulb"></i> Tip: Use quotes for exact phrase matches
+                </div>
+            </div>
+        </section>
+        
+        <!-- Features Section -->
+        <section class="features">
+            <h2 class="section-title">Powerful Research Tools</h2>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-database"></i>
+                    </div>
+                    <div class="feature-content">
+                        <h3>Comprehensive Database</h3>
+                        <p>Access millions of scholarly journals, newspapers, magazines, and dissertations from renowned publications worldwide.</p>
+                    </div>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-search-plus"></i>
+                    </div>
+                    <div class="feature-content">
+                        <h3>Advanced Search</h3>
+                        <p>Utilize sophisticated search tools with filters for date, subject, publication type, and more to find exactly what you need.</p>
+                    </div>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-quote-right"></i>
+                    </div>
+                    <div class="feature-content">
+                        <h3>Citation Tools</h3>
+                        <p>Generate citations in APA, MLA, Chicago, and other formats with our automatic citation generator.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Resources Section -->
+        <section class="resources">
+            <h2 class="section-title">Research Resources</h2>
+            
+            <div class="resources-grid">
+                <div class="resource-card">
+                    <h3>For Researchers</h3>
+                    <div class="resource-links">
+                        <a href="#">Literature Search Guide</a>
+                        <a href="#">Research Methodology</a>
+                        <a href="#">Systematic Reviews</a>
+                        <a href="#">Data Analysis Resources</a>
+                    </div>
+                </div>
+                
+                <div class="resource-card">
+                    <h3>For Students</h3>
+                    <div class="resource-links">
+                        <a href="#">Writing Research Papers</a>
+                        <a href="#">Thesis & Dissertation Guide</a>
+                        <a href="#">Citation Basics</a>
+                        <a href="#">Study Resources</a>
+                    </div>
+                </div>
+                
+                <div class="resource-card">
+                    <h3>For Librarians</h3>
+                    <div class="resource-links">
+                        <a href="#">Admin Tools</a>
+                        <a href="#">Usage Reports</a>
+                        <a href="#">Integration Guide</a>
+                        <a href="#">Training Materials</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-column">
+                    <h3>Products</h3>
+                    <a href="#">ProQuest Central</a>
+                    <a href="#">Dissertations & Theses</a>
+                    <a href="#">Historical Newspapers</a>
+                    <a href="#">Ebook Central</a>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Support</h3>
+                    <a href="#">Help Center</a>
+                    <a href="#">Contact Us</a>
+                    <a href="#">Training Resources</a>
+                    <a href="#">Accessibility</a>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Company</h3>
+                    <a href="#">About Us</a>
+                    <a href="#">Careers</a>
+                    <a href="#">News</a>
+                    <a href="#">Partners</a>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Connect</h3>
+                    <a href="#">Blog</a>
+                    <a href="#">Twitter</a>
+                    <a href="#">Facebook</a>
+                    <a href="#">YouTube</a>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                <p>&copy; 2023 ResearchQuest. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Simple tab functionality
+        document.querySelectorAll('.search-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                document.querySelectorAll('.search-tab').forEach(t => {
+                    t.classList.remove('active');
+                });
+                tab.classList.add('active');
+            });
+        });
+    </script>
+</body>
+</html>
